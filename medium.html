@@ -132,6 +132,29 @@
             background: linear-gradient(to right, #FF7F00, #FF4500);
             transform: scale(1.1);
         }
+
+        /* Back button styling */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(to right, #FF7F00, #FF6347);
+            color: white;
+            font-size: 1.2em;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Indie Flower', cursive;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(to right, #FF6347, #FF4500);
+            transform: scale(1.1);
+        }
+
     </style>
 </head>
 
@@ -141,13 +164,16 @@
     <div class="background"></div>
     <div class="blur-overlay"></div>
 
+    <!-- Back Button -->
+    <button class="back-btn" onclick="goBack()">Back</button>
+
     <!-- Main container -->
     <div class="container">
         <!-- User Identification Circle -->
         <div class="user-circle"><i class="fas fa-user"></i></div>
 
         <!-- Heading for Levels -->
-        <h2>LEVELS: Medium</h2>
+        <h2>LEVELS: MEDIUM</h2>
 
         <!-- Level selection grid -->
         <div class="levels">
@@ -187,6 +213,11 @@
         function nextLevel() {
             alert("Proceeding to the next level...");
             // Add logic to move to the next level
+        }
+
+        // Back button function
+        function goBack() {
+            window.location.href = "Instruction.html"; // Redirect to the instruction page
         }
     </script>
 

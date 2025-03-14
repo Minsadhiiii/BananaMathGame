@@ -106,6 +106,24 @@
             background-color: #ff9e00;
         }
 
+        /* Back Button */
+        .back-button {
+            background-color: #FFB700;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-family: 'Indie Flower', cursive;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #ff9e00;
+        }
+
         /* Fade In Animation */
         @keyframes fadeIn {
             from {
@@ -142,7 +160,8 @@
         <!-- Buttons -->
         <div class="button-container">
             <button id="change-name" class="profile-button">Change Name</button>
-            <button id="back-to-menu" class="profile-button">Back to Menu</button>
+            <!-- Back Button -->
+            <button class="back-button" onclick="goBack()">Back</button>
         </div>
     </div>
 
@@ -184,10 +203,10 @@
             }
         });
 
-        // Back to Menu Functionality (example redirects to main menu)
-        document.getElementById("back-to-menu").addEventListener("click", function() {
-            window.location.href = 'main_menu.html'; // Change this URL to the actual main menu URL
-        });
+        // Back to Instructions Page Functionality
+        function goBack() {
+            window.location.href = 'Instruction.html'; // Ensure this file exists
+        }
 
         // Load profile when page loads
         window.onload = loadProfile;

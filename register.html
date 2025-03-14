@@ -5,6 +5,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - The Banana Game</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Indie Flower', cursive;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('c:/Users/ASUS/OneDrive/Desktop/Banana.jpg') no-repeat center center/cover;
+            z-index: -2;
+        }
+
+        .blur-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 235, 133, 0.4);
+            backdrop-filter: blur(8px);
+            z-index: -1;
+        }
+
+        .container {
+            position: relative;
+            width: 350px;
+            height: 450px;
+            text-align: left;
+            background: rgba(255, 248, 220, 0.9);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        .title-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .title {
+            font-size: 2em;
+            color: #000000;
+        }
+
+        .logo-container {
+            text-align: center;
+        }
+
+        .logo {
+            width: 50px;
+            height: auto;
+        }
+
+        .form-container {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            font-size: 1.2em;
+            color: #000000;
+            margin-bottom: 5px;
+        }
+
+        .input-field {
+            width: 200px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .submit-button {
+            background: linear-gradient(to right, #FFA500, #FF7F00);
+            color: white;
+            font-size: 1.2em;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+            font-family: 'Indie Flower', cursive;
+            margin-top: 15px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .submit-button:hover {
+            background: linear-gradient(to right, #FF7F00, #FF4500);
+            transform: scale(1.05);
+        }
+
+        .signup-link {
+            font-size: 1em;
+            color: #000000;
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Back Button Styling */
+        .back-button {
+            background: linear-gradient(to right, #FFA500, #FF7F00);
+            color: white;
+            font-size: 1.2em;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+            font-family: 'Indie Flower', cursive;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 2;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(to right, #FF7F00, #FF4500);
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 
 <body>
@@ -38,129 +177,19 @@
         <a href="login.html" class="signup-link">ALREADY HAVE AN ACCOUNT? LOGIN</a>
     </div>
 
+    <button class="back-button" onclick="goBack()">BACK</button>
+
     <script>
         document.querySelector('.submit-button').addEventListener('click', function() {
             alert('Register button clicked!');
             // Placeholder: Add registration functionality here
         });
+
+        // Function to go back to the instruction page
+        function goBack() {
+            window.location.href = 'instruction.html';  // Redirect to instruction page
+        }
     </script>
 </body>
 
 </html>
-
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
-
-    body {
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-family: 'Indie Flower', cursive;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: url('c:/Users/ASUS/OneDrive/Desktop/Banana.jpg') no-repeat center center/cover;
-        z-index: -2;
-    }
-
-    .blur-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 235, 133, 0.4);
-        backdrop-filter: blur(8px);
-        z-index: -1;
-    }
-
-    .container {
-        position: relative;
-        width: 350px;
-        height: 450px;
-        text-align: left;
-        background: rgba(255, 248, 220, 0.9);
-        padding: 20px;
-        border-radius: 20px;
-        box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.3);
-        z-index: 1;
-    }
-
-    .title-container {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .title {
-        font-size: 2em;
-        color: #000000;
-    }
-
-    .logo-container {
-        text-align: center;
-    }
-
-    .logo {
-        width: 50px;
-        height: auto;
-    }
-
-    .form-container {
-        text-align: center;
-    }
-
-    label {
-        display: block;
-        font-size: 1.2em;
-        color: #000000;
-        margin-bottom: 5px;
-    }
-
-    .input-field {
-        width: 200px;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-top: 5px;
-    }
-
-    .submit-button {
-        background: linear-gradient(to right, #FFA500, #FF7F00);
-        color: white;
-        font-size: 1.2em;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: 0.3s;
-        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
-        font-family: 'Indie Flower', cursive;
-        margin-top: 15px;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .submit-button:hover {
-        background: linear-gradient(to right, #FF7F00, #FF4500);
-        transform: scale(1.05);
-    }
-
-    .signup-link {
-        font-size: 1em;
-        color: #000000;
-        display: block;
-        text-align: center;
-        margin-top: 20px;
-    }
-</style>

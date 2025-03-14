@@ -33,11 +33,19 @@
         <a href="register.html" class="signup-link">NO ACCOUNT SIGNUP</a>
     </div>
 
+    <!-- Back Button positioned in the top left corner -->
+    <button class="back-button" onclick="goBack()">BACK</button>
+
     <script>
         document.querySelector('.submit-button').addEventListener('click', function() {
             alert('You have successfully logged in.');
             window.location.href = 'instruction.html';  // Redirect to instruction page
         });
+
+        // Function to go back to the instruction page
+        function goBack() {
+            window.location.href = 'instruction.html';  // Redirect to instruction page
+        }
     </script>
 </body>
 
@@ -167,5 +175,27 @@
         display: block;
         text-align: center;
         margin-top: 20px;
+    }
+
+    /* Back Button Styling */
+    .back-button {
+        background: linear-gradient(to right, #FFA500, #FF7F00);
+        color: white;
+        font-size: 1.2em;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+        font-family: 'Indie Flower', cursive;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+    }
+
+    .back-button:hover {
+        background: linear-gradient(to right, #FF7F00, #FF4500);
+        transform: scale(1.05);
     }
 </style>
