@@ -73,11 +73,8 @@
             margin-right: 10px;
         }
 
-        /* Continue Button */
-        .continue-btn {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
+        /* Button Styles */
+        .button {
             background: linear-gradient(to right, #FFA500, #FF7F00);
             color: white;
             font-size: 1.3em;
@@ -87,11 +84,20 @@
             cursor: pointer;
             transition: 0.3s;
             font-family: 'Indie Flower', cursive;
+            margin-top: 15px;
+            margin-bottom: 10px;
         }
 
-        .continue-btn:hover {
+        .button:hover {
             background: linear-gradient(to right, #FF7F00, #FF4500);
             transform: scale(1.1);
+        }
+
+        /* Continue Button Specific Style */
+        .continue-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
         }
     </style>
 </head>
@@ -111,7 +117,9 @@
             <p><i class="fas fa-check-circle banana-icon"></i> Have fun and challenge yourself!</p>
         </div>
 
-        <button class="continue-btn">Continue <i class="fas fa-arrow-right"></i></button>
+        <button class="button" onclick="window.location.href='select.html'">Continue to Selection</button>
+        <button class="button" onclick="window.location.href='scoreboard.html'">Go to Scoreboard</button>
+        <button class="button" onclick="window.location.href='profile.html'">View Profile</button>
     </div>
 
 </body>
