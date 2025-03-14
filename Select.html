@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banana Math Game</title>
+</head>
+<body>
+
+    <!-- Background Image -->
+    <div class="background"></div>
+
+    <!-- Blurred Overlay -->
+    <div class="blur-overlay"></div>
+
+    <!-- Game Container -->
+    <div class="container">
+        <h1 class="title">The BANANA GAME!</h1>
+        <p class="subtitle">"Test your math skills with a fun banana challenge"</p>
+
+        <!-- Difficulty Buttons -->
+        <div class="button-container">
+            <button class="play-button" onclick="startGame('easy')">EASY</button>
+            <button class="play-button" onclick="startGame('medium')">MEDIUM</button>
+            <button class="play-button" onclick="startGame('hard')">HARD</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript function to start the game based on selected difficulty
+        function startGame(difficulty) {
+            // Display an alert with the selected difficulty level
+            alert("Game Starting on " + difficulty.toUpperCase() + " level! 🚀");
+
+            // You can replace the alert with actual game navigation logic.
+            // Example of navigating to a new page (game.html) with difficulty as a query parameter:
+            // window.location.href = "game.html?difficulty=" + difficulty;
+        }
+    </script>
+</body>
+</html>
+
+<style> 
+ @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+
+/* Full-Screen Background */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Indie Flower', cursive;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background Image */
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('c:/Users/ASUS/OneDrive/Desktop/Banana.jpg') no-repeat center center/cover;
+    z-index: -2;
+}
+
+/* Blurred Overlay */
+.blur-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 235, 133, 0.4); /* Light yellow tint */
+    backdrop-filter: blur(8px); /* Blurs the background */
+    z-index: -1;
+}
+
+/* Game Container */
+.container {
+    text-align: center;
+    background: rgba(255, 248, 220, 0.9);
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.title {
+    font-size: 3.5rem;
+    color: #5C4033;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 1.4rem;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Button Container */
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+/* Play Button */
+.play-button {
+    background: linear-gradient(to right, #FFA500, #FF7F00);
+    color: white;
+    font-size: 1.6rem;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+    font-family: Indie Flower, cursive;
+    width: 200px;
+}
+
+.play-button:hover {
+    background: linear-gradient(to right, #FF7F00, #FF4500);
+    transform: scale(1.05);
+}
+</style>
