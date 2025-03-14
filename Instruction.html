@@ -42,6 +42,27 @@
             z-index: -1;
         }
 
+        /* Exit Button */
+        .exit-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: red;
+            color: white;
+            font-size: 1.2em;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Indie Flower', cursive;
+        }
+
+        .exit-button:hover {
+            background: darkred;
+            transform: scale(1.1);
+        }
+
         /* Main container */
         .container {
             background: rgba(255, 248, 220, 0.8);
@@ -92,21 +113,15 @@
             background: linear-gradient(to right, #FF7F00, #FF4500);
             transform: scale(1.1);
         }
-
-        /* Continue Button Specific Style */
-        .continue-btn {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-        }
     </style>
 </head>
 
 <body>
-
     <div class="background"></div>
     <div class="blur-overlay"></div>
-
+    
+    <button class="exit-button" onclick="window.location.href='main.html'">Exit</button>
+    
     <div class="container">
         <h2><i class="fas fa-info-circle banana-icon"></i>Game Instructions</h2>
         <div class="instructions">
@@ -121,6 +136,5 @@
         <button class="button" onclick="window.location.href='scoreboard.html'">Go to Scoreboard</button>
         <button class="button" onclick="window.location.href='profile.html'">View Profile</button>
     </div>
-
 </body>
 </html>
