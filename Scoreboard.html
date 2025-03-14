@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoreboard - Banana Math Game</title>
+</head>
+<body>
+
+    <!-- Background Image -->
+    <div class="background"></div>
+
+    <!-- Blurred Overlay -->
+    <div class="blur-overlay"></div>
+
+    <!-- Scoreboard Container -->
+    <div class="container">
+        <h1 class="title">Game Scoreboard</h1>
+        <p class="subtitle">Track your progress and compare with others!</p>
+
+        <!-- Score Table -->
+        <table class="score-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Player Name</th>
+                    <th>Levels Played</th>
+                    <th>Points Earned</th>
+                </tr>
+            </thead>
+            <tbody id="scoreboard-body">
+                <!-- Scoreboard will be dynamically updated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Sample Player Scores (Can be fetched from a database)
+        const players = [
+            { name: "Alice", levels: 5, points: 120 },
+            { name: "Bob", levels: 3, points: 80 },
+            { name: "Charlie", levels: 7, points: 150 },
+            { name: "David", levels: 2, points: 60 },
+            { name: "Emma", levels: 4, points: 90 }
+        ];
+
+        // Function to Update the Scoreboard
+        function updateScoreboard() {
+            const scoreboardBody = document.getElementById("scoreboard-body");
+            scoreboardBody.innerHTML = ""; // Clear previous data
+
+            // Sort Players by Points (Descending Order)
+            players.sort((a, b) => b.points - a.points);
+
+            // Populate Table Rows
+            players.forEach((player, index) => {
+                let row = `<tr>
+                    <td>${index + 1}</td>
+                    <td>${player.name}</td>
+                    <td>${player.levels}</td>
+                    <td>${player.points}</td>
+                </tr>`;
+                scoreboardBody.innerHTML += row;
+            });
+        }
+
+        // Call Function to Update Scoreboard on Page Load
+        window.onload = updateScoreboard;
+    </script>
+
+</body>
+</html>
+
+<style> 
+ @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+
+/* Full-Screen Background */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Indie Flower', cursive;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background Image */
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('c:/Users/ASUS/OneDrive/Desktop/Banana.jpg') no-repeat center center/cover;
+    z-index: -2;
+}
+
+/* Blurred Overlay */
+.blur-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 235, 133, 0.4);
+    backdrop-filter: blur(8px);
+    z-index: -1;
+}
+
+/* Scoreboard Container */
+.container {
+    text-align: center;
+    background: rgba(255, 248, 220, 0.9);
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.title {
+    font-size: 3.5rem;
+    color: #5C4033;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 1.4rem;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Score Table */
+.score-table {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.score-table th, .score-table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.score-table th {
+    background: #FFA500;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.score-table tr:nth-child(even) {
+    background: #fffbe6;
+}
+
+.score-table tr:nth-child(odd) {
+    background: #ffefc1;
+}
+
+.score-table tr:hover {
+    background: #ffdb85;
+    transition: 0.3s;
+}
+</style>

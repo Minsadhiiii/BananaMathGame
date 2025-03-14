@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - Banana Math Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+    <style>
+        /* Full-Screen Background */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Indie Flower', cursive;
+            position: relative;
+            overflow: hidden;
+            background: url('c:/Users/ASUS/OneDrive/Desktop/Banana.jpg') no-repeat center center/cover;
+        }
+
+        /* Blurred Overlay */
+        .blur-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 235, 133, 0.4);
+            backdrop-filter: blur(8px);
+            z-index: -1;
+        }
+
+        /* Profile Container */
+        .profile-container {
+            text-align: center;
+            background: rgba(255, 248, 220, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Profile Image Container */
+        .profile-pic-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #FFB700;
+            background: white;
+        }
+
+        .profile-pic-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Image Upload Input */
+        #upload-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* User Name */
+        h1 {
+            font-size: 2.8rem;
+            color: #5C4033;
+            margin-bottom: 10px;
+        }
+
+        /* Profile Info */
+        .profile-info {
+            font-size: 1.5rem;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        /* Buttons */
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .profile-button {
+            background-color: #FFB700;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s ease;
+            font-family: 'Indie Flower', cursive;
+        }
+
+        .profile-button:hover {
+            background-color: #ff9e00;
+        }
+
+        /* Fade In Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Blurred Overlay -->
+    <div class="blur-overlay"></div>
+
+    <!-- Profile Container -->
+    <div class="profile-container">
+        
+        <!-- Profile Image Upload -->
+        <div class="profile-pic-container">
+            <img id="profile-image" src="c:/Users/ASUS/OneDrive/Desktop/default-avatar.png" alt="User Profile">
+            <input type="file" id="upload-image" accept="image/*">
+        </div>
+
+        <!-- User Details -->
+        <h1 id="username">Player Name</h1>
+        <p class="profile-info">Rank: <span id="user-rank">Loading...</span></p>
+        <p class="profile-info">Levels Played: <span id="user-levels">Loading...</span></p>
+        <p class="profile-info">Points Earned: <span id="user-points">Loading...</span></p>
+
+        <!-- Buttons -->
+        <div class="button-container">
+            <button id="change-name" class="profile-button">Change Name</button>
+            <button id="back-to-menu" class="profile-button">Back to Menu</button>
+        </div>
+    </div>
+
+    <script>
+        // Example Player Data (Can be fetched from a database)
+        const playerData = { 
+            name: "Alice",
+            rank: 1,
+            levels: 5,
+            points: 120
+        };
+
+        // Function to Load Profile Data
+        function loadProfile() {
+            document.getElementById("username").innerText = playerData.name;
+            document.getElementById("user-rank").innerText = playerData.rank;
+            document.getElementById("user-levels").innerText = playerData.levels;
+            document.getElementById("user-points").innerText = playerData.points;
+        }
+
+        // Image Upload Functionality
+        document.getElementById("upload-image").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById("profile-image").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Change Name Functionality
+        document.getElementById("change-name").addEventListener("click", function() {
+            const newName = prompt("Enter your new name:");
+            if (newName) {
+                playerData.name = newName;
+                loadProfile(); // Update profile with new name
+            }
+        });
+
+        // Back to Menu Functionality (example redirects to main menu)
+        document.getElementById("back-to-menu").addEventListener("click", function() {
+            window.location.href = 'main_menu.html'; // Change this URL to the actual main menu URL
+        });
+
+        // Load profile when page loads
+        window.onload = loadProfile;
+    </script>
+
+</body>
+</html>
