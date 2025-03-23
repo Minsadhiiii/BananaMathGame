@@ -26,7 +26,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('c:/Users/ASUS/OneDrive/Desktop/Banana.jpg') no-repeat center center/cover;
+            background: url('images/Banana.jpg') no-repeat center center/cover;
             z-index: -2;
         }
 
@@ -121,7 +121,6 @@
             margin-top: 20px;
         }
 
-        /* Back Button Styling */
         .back-button {
             background: linear-gradient(to right, #FFA500, #FF7F00);
             color: white;
@@ -143,6 +142,12 @@
             background: linear-gradient(to right, #FF7F00, #FF4500);
             transform: scale(1.05);
         }
+
+        .error {
+            color: red;
+            font-size: 1.2em;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -159,19 +164,23 @@
         </div>
 
         <div class="form-container">
-            <label for="name">Name :</label>
-            <input type="text" id="name" class="input-field">
+            <!-- Register Form Starts -->
+            <form id="register-form" action="register.php" method="POST" onsubmit="return showAlert()">
+                <label for="name">Name :</label>
+                <input type="text" id="name" name="username" class="input-field" required>
 
-            <label for="email">Email :</label>
-            <input type="email" id="email" class="input-field">
+                <label for="email">Email :</label>
+                <input type="email" id="email" name="email" class="input-field" required>
 
-            <label for="password">Password :</label>
-            <input type="password" id="password" class="input-field">
+                <label for="password">Password :</label>
+                <input type="password" id="password" name="password" class="input-field" required>
 
-            <label for="confirm-password">Confirm Password :</label>
-            <input type="password" id="confirm-password" class="input-field">
+                <label for="confirm-password">Confirm Password :</label>
+                <input type="password" id="confirm-password" name="confirm-password" class="input-field" required>
 
-            <button class="submit-button">REGISTER</button>
+                <button type="submit" class="submit-button">REGISTER</button>
+            </form>
+            <!-- Register Form Ends -->
         </div>
 
         <a href="login.html" class="signup-link">ALREADY HAVE AN ACCOUNT? LOGIN</a>
@@ -180,14 +189,16 @@
     <button class="back-button" onclick="goBack()">BACK</button>
 
     <script>
-        document.querySelector('.submit-button').addEventListener('click', function() {
-            alert('Register button clicked!');
-            // Placeholder: Add registration functionality here
-        });
-
         // Function to go back to the instruction page
         function goBack() {
             window.location.href = 'instruction.html';  // Redirect to instruction page
+        }
+
+        // Function to show the registration success alert
+        function showAlert() {
+            alert("Registration Successful! Welcome to The Banana Game.");
+            window.location.href = 'login.html';  // Redirect to the login page after the alert
+            return false;  // Prevents the form from submitting normally
         }
     </script>
 </body>
