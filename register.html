@@ -165,7 +165,7 @@
 
         <div class="form-container">
             <!-- Register Form Starts -->
-            <form id="register-form" action="register.php" method="POST" onsubmit="return showAlert()">
+            <form id="register-form" action="register.php" method="POST">
                 <label for="name">Name :</label>
                 <input type="text" id="name" name="username" class="input-field" required>
 
@@ -192,13 +192,6 @@
         // Function to go back to the instruction page
         function goBack() {
             window.location.href = 'instruction.html';  // Redirect to instruction page
-        }
-
-        // Function to show the registration success alert
-        function showAlert() {
-            alert("Registration Successful! Welcome to The Banana Game.");
-            window.location.href = 'login.html';  // Redirect to the login page after the alert
-            return false;  // Prevents the form from submitting normally
         }
     </script>
 </body>
