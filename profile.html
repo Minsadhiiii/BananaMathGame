@@ -1,5 +1,15 @@
+<?php
+// Ensure user is logged in
+session_start();
+if (!isset($_SESSION['email'])) {
+    header('Location: login.html');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -130,6 +140,7 @@
                 opacity: 0;
                 transform: translateY(-30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -137,6 +148,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- Blurred Overlay -->
@@ -144,73 +156,28 @@
 
     <!-- Profile Container -->
     <div class="profile-container">
-        
-        <!-- Profile Image Upload -->
+        <!-- Profile Image -->
         <div class="profile-pic-container">
-            <img id="profile-image" src="c:/Users/ASUS/OneDrive/Desktop/default-avatar.png" alt="User Profile">
+            <img id="profile-image" src="<?php echo $_SESSION['profile_picture'] ? $_SESSION['profile_picture'] : 'images/default-avatar.png'; ?>" alt="User Profile">
             <input type="file" id="upload-image" accept="image/*">
         </div>
 
         <!-- User Details -->
-        <h1 id="username">Player Name</h1>
-        <p class="profile-info">Rank: <span id="user-rank">Loading...</span></p>
-        <p class="profile-info">Levels Played: <span id="user-levels">Loading...</span></p>
-        <p class="profile-info">Points Earned: <span id="user-points">Loading...</span></p>
+        <h1 id="username"><?php echo $_SESSION['username']; ?></h1>
+        <p class="profile-info">Email: <?php echo $_SESSION['email']; ?></p>
+        <p class="profile-info">Rank: <span id="user-rank">Bronze</span></p>
+        <p class="profile-info">Levels Played: <span id="user-levels">5</span></p>
 
-        <!-- Buttons -->
+        <!-- Edit Profile Button -->
         <div class="button-container">
-            <button id="change-name" class="profile-button">Change Name</button>
-            <!-- Back Button -->
-            <button class="back-button" onclick="goBack()">Back</button>
+            <button class="profile-button">Edit Profile</button>
+            <button class="profile-button">Change Password</button>
         </div>
+
+        <!-- Back Button -->
+        <button class="back-button" onclick="window.location.href='index.html'">Back</button>
     </div>
 
-    <script>
-        // Example Player Data (Can be fetched from a database)
-        const playerData = { 
-            name: "Alice",
-            rank: 1,
-            levels: 5,
-            points: 120
-        };
-
-        // Function to Load Profile Data
-        function loadProfile() {
-            document.getElementById("username").innerText = playerData.name;
-            document.getElementById("user-rank").innerText = playerData.rank;
-            document.getElementById("user-levels").innerText = playerData.levels;
-            document.getElementById("user-points").innerText = playerData.points;
-        }
-
-        // Image Upload Functionality
-        document.getElementById("upload-image").addEventListener("change", function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById("profile-image").src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // Change Name Functionality
-        document.getElementById("change-name").addEventListener("click", function() {
-            const newName = prompt("Enter your new name:");
-            if (newName) {
-                playerData.name = newName;
-                loadProfile(); // Update profile with new name
-            }
-        });
-
-        // Back to Instructions Page Functionality
-        function goBack() {
-            window.location.href = 'Instruction.html'; // Ensure this file exists
-        }
-
-        // Load profile when page loads
-        window.onload = loadProfile;
-    </script>
-
 </body>
+
 </html>

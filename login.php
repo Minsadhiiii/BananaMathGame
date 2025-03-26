@@ -20,9 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    // Prepare SQL query to fetch user by email
+    // Prepare SQL query to fetch user details
     $sql = "SELECT username, email, password FROM users WHERE email = ?";
-
     if ($stmt = $conn->prepare($sql)) {
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -35,14 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Verify password
             if (password_verify($password, $db_password)) {
-                // Store session data
+                // Store user details in session
                 $_SESSION['username'] = $username;
                 $_SESSION['email'] = $db_email;
-                
-                // Redirect after login
+
                 echo "<script>
-                        alert('Login successful!');
-                        window.location.href = 'instruction.html';  // Redirect to the instruction page
+                        alert('Login successful! Welcome, $username');
+                        window.location.href = 'instruction.php';  // Redirect to instruction page 
                       </script>";
                 exit();
             } else {
