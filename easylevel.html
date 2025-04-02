@@ -20,7 +20,6 @@
             overflow: hidden;
         }
 
-        /* Full-Screen Background with Blurred Overlay */
         .background {
             position: fixed;
             top: 0;
@@ -31,7 +30,6 @@
             z-index: -2;
         }
 
-        /* Blurred Overlay */
         .blur-overlay {
             position: fixed;
             top: 0;
@@ -43,7 +41,6 @@
             z-index: -1;
         }
 
-        /* Main container */
         .container {
             background: rgba(255, 248, 220, 0.8);
             padding: 20px;
@@ -55,7 +52,6 @@
             z-index: 1;
         }
 
-        /* User circle styling */
         .user-circle {
             width: 80px;
             height: 80px;
@@ -102,6 +98,8 @@
             border-radius: 10px;
             cursor: pointer;
             transition: 0.3s;
+            color: white;
+            text-decoration: none;
         }
 
         .level:hover {
@@ -133,7 +131,6 @@
             transform: scale(1.1);
         }
 
-        /* Back button styling */
         .back-btn {
             position: absolute;
             top: 20px;
@@ -154,13 +151,12 @@
             background: linear-gradient(to right, #FF6347, #FF4500);
             transform: scale(1.1);
         }
-
     </style>
 </head>
 
 <body>
 
-    <!-- Background with Blur and Overlay -->
+    <!-- Background -->
     <div class="background"></div>
     <div class="blur-overlay"></div>
 
@@ -169,24 +165,22 @@
 
     <!-- Main container -->
     <div class="container">
-        <!-- User Identification Circle -->
         <div class="user-circle"><i class="fas fa-user"></i></div>
 
-        <!-- Heading for Levels -->
         <h2>LEVELS: EASY</h2>
 
         <!-- Level selection grid -->
         <div class="levels">
-            <div class="level" onclick="selectLevel(1)">1</div>
-            <div class="level" onclick="selectLevel(2)">2</div>
-            <div class="level" onclick="selectLevel(3)">3</div>
-            <div class="level" onclick="selectLevel(4)">4</div>
-            <div class="level" onclick="selectLevel(5)">5</div>
-            <div class="level" onclick="selectLevel(6)">6</div>
-            <div class="level" onclick="selectLevel(7)">7</div>
-            <div class="level" onclick="selectLevel(8)">8</div>
-            <div class="level" onclick="selectLevel(9)">9</div>
-            <div class="level" onclick="selectLevel(10)">10</div>
+            <a class="level" href="Game.php">1</a>
+            <a class="level" href="Game.php">2</a>
+            <a class="level" href="Game.php">3</a>
+            <a class="level" href="Game.php">4</a>
+            <a class="level" href="Game.php">5</a>
+            <a class="level" href="Game.php">6</a>
+            <a class="level" href="Game.php">7</a>
+            <a class="level" href="Game.php">8</a>
+            <a class="level" href="Game.php">9</a>
+            <a class="level" href="Game.php">10</a>
         </div>
 
         <!-- Buttons -->
@@ -197,27 +191,19 @@
     </div>
 
     <script>
-        // Function to handle level selection
-        function selectLevel(level) {
-            alert("You selected level " + level);
-            // Add any logic here for transitioning to the selected level
+        // Function to handle the back button
+        function goBack() {
+            window.location.href = "Instruction.php";
         }
 
-        // Function to handle score board
+        // Function to show the scoreboard
         function showScoreBoard() {
             alert("Opening Scoreboard...");
-            // Add logic to display the score board
         }
 
-        // Function for next level
+        // Function to go to the next level (Placeholder)
         function nextLevel() {
             alert("Proceeding to the next level...");
-            // Add logic to move to the next level
-        }
-
-        // Back button function
-        function goBack() {
-            window.location.href = "Instruction.html"; // Redirect to the instruction page
         }
     </script>
 

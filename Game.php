@@ -1,3 +1,47 @@
+<?php
+session_start();
+include 'db_connect.php'; // Include your database connection file
+
+if (!isset($_SESSION['email'])) {
+    header("Location: login.php"); // Redirect to login page if not logged in
+    exit();
+}
+
+$email = $_SESSION['email'];
+
+// Fetch user details
+$query = $conn->prepare("SELECT id, user_id, score, levels_played FROM users WHERE email = ?");
+$query->bind_param("s", $email);
+$query->execute();
+$result = $query->get_result();
+$user = $result->fetch_assoc();
+
+if (!$user) {
+    die("User not found!");
+}
+
+$user_id = $user['user_id'];
+$score = $user['score'];
+$levels_played = $user['levels_played'];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correct'])) {
+    // Update score and levels played
+    $newScore = $score + 10;
+    $newLevels = $levels_played + 1;
+    
+    $updateQuery = $conn->prepare("UPDATE users SET score = ?, levels_played = ?, date_played = NOW() WHERE user_id = ?");
+    $updateQuery->bind_param("iii", $newScore, $newLevels, $user_id);
+    $updateQuery->execute();
+
+    // Update the session values
+    $_SESSION['score'] = $newScore;
+    $_SESSION['levels_played'] = $newLevels;
+    
+    echo json_encode(["success" => true, "newScore" => $newScore, "newLevels" => $newLevels]);
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,14 +63,13 @@
             overflow: hidden;
         }
 
-        
         .background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('cimages/Banana.jpg') no-repeat center center cover; 
+            background: url('images/Banana.jpg') no-repeat center center/cover; 
             z-index: -2;
         }
 
@@ -99,6 +142,13 @@
             margin-top: 10px;
             color: #333;
         }
+
+        #score-display {
+            font-size: 1.5rem;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -106,9 +156,10 @@
     <div class="background"></div>
     <div class="blur-overlay"></div>
 
-    <!-- Game Container -->
     <div class="game-container">
         <h1 class="title">🍌 Banana Math Challenge 🍌</h1>
+        <p><strong>User:</strong> <?= htmlspecialchars($email) ?></p>
+        <p id="score-display">Score: <?= $score ?></p>
         <img id="puzzle-image" src="" alt="Loading puzzle...">
         <p id="timer">30</p>
         <div id="answer-buttons"></div>
@@ -122,12 +173,11 @@
         let gameOver = false;
         let currentAnswers = [];
 
-        // Fetch and display the puzzle
         function fetchPuzzle() {
             if (gameOver) return;
 
-            clearInterval(timerInterval); // Stop any previous timer
-            timeLeft = 30; // Reset timer
+            clearInterval(timerInterval);
+            timeLeft = 30;
             document.getElementById("timer").textContent = timeLeft;
 
             fetch("https://marcconrad.com/uob/banana/api.php")
@@ -145,19 +195,17 @@
                 });
         }
 
-        // Generate random answer choices including the correct solution
         function generateAnswerChoices(solution) {
             let choices = [solution];
             while (choices.length < 4) {
-                let randomChoice = Math.floor(Math.random() * 100); // Random number between 0 and 100
+                let randomChoice = Math.floor(Math.random() * 100);
                 if (!choices.includes(randomChoice)) {
                     choices.push(randomChoice);
                 }
             }
-            return choices.sort(() => Math.random() - 0.5); // Shuffle choices
+            return choices.sort(() => Math.random() - 0.5);
         }
 
-        // Display answer buttons 
         function displayAnswerButtons(answers) {
             const answerButtonsContainer = document.getElementById("answer-buttons");
             answerButtonsContainer.innerHTML = ''; 
@@ -170,7 +218,6 @@
             });
         }
 
-        // Start the timer
         function startTimer() {
             timerInterval = setInterval(function() {
                 timeLeft--;
@@ -183,17 +230,22 @@
             }, 1000);
         }
 
-        // Check if the player's answer is correct
         function checkAnswer(playerAnswer) {
             if (playerAnswer == currentSolution) {
                 document.getElementById("feedback").textContent = 'Correct! 🍌';
-                fetchPuzzle(); // Fetch new puzzle for the next round
+                
+                fetch("", { method: "POST", body: new URLSearchParams({ correct: true }) })
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById("score-display").textContent = "Score: " + data.newScore;
+                        fetchPuzzle();
+                    });
+
             } else {
                 document.getElementById("feedback").textContent = 'Oops! Try again.';
             }
         }
 
-        // Start the first puzzle when the page loads
         fetchPuzzle();
     </script>
 </body>

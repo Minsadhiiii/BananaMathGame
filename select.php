@@ -121,21 +121,16 @@
     </style>
 </head>
 <body>
-
     <!-- Background Image -->
     <div class="background"></div>
-
     <!-- Blurred Overlay -->
     <div class="blur-overlay"></div>
-
     <!-- Back Arrow -->
     <div class="back-arrow" onclick="goBack()">⬅</div>
-
     <!-- Game Container -->
     <div class="container">
         <h1 class="title">The BANANA GAME!</h1>
         <p class="subtitle">"Test your math skills with a fun banana challenge"</p>
-
         <!-- Difficulty Buttons -->
         <div class="button-container">
             <button class="play-button" id="easyBtn">EASY</button>
@@ -143,7 +138,6 @@
             <button class="play-button" id="hardBtn">HARD</button>
         </div>
     </div>
-
     <script>
         // Function to navigate to the instruction page
         function goBack() {
@@ -153,11 +147,10 @@
         // Function to start the game based on difficulty
         function startGame(difficulty) {
             const pages = {
-                'easy': 'easylevel.html',
+                'easy': 'easylevel.php',
                 'medium': 'medium.html',
                 'hard': 'hardlevel.html'
             };
-
             if (pages[difficulty]) {
                 window.location.href = pages[difficulty];
             } else {
@@ -178,6 +171,5 @@
             startGame('hard');
         });
     </script>
-
 </body>
 </html>
