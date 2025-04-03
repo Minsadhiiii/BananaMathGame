@@ -120,14 +120,14 @@ header('Content-Type: text/html; charset=UTF-8');
             border-radius: 5px;
             transition: 0.3s;
             font-family: 'Indie Flower', cursive;
-            display: none; /* Initially hidden */
+            display: none; 
         }
 
         #next-button:hover {
             background-color: #218838;
         }
 
-        /* Style for the Update button in top-right corner */
+        
         #update-button {
             position: absolute;
             top: 20px;
@@ -173,7 +173,7 @@ header('Content-Type: text/html; charset=UTF-8');
         let gameOver = false;
         let currentAnswers = [];
         let score = 0;  // Initialize score variable
-        let userEmail = 'nahla@gmail.com';  // Replace this with the actual user's email
+        let userEmail = 'nahla@gmail.com';  
 
         // Fetch and display the puzzle
         function fetchPuzzle() {
@@ -185,7 +185,7 @@ header('Content-Type: text/html; charset=UTF-8');
 
             // Reset feedback and score display
             document.getElementById("feedback").textContent = '';
-            document.getElementById("next-button").style.display = "none"; // Hide next button
+            document.getElementById("next-button").style.display = "none"; // 
 
             fetch("https://marcconrad.com/uob/banana/api.php")
                 .then(response => response.json())
@@ -207,12 +207,12 @@ header('Content-Type: text/html; charset=UTF-8');
 function generateAnswerChoices(solution) {
     let choices = [solution];
     while (choices.length < 4) {
-        let randomChoice = Math.floor(Math.random() * 10); // Random number between 0 and 9
+        let randomChoice = Math.floor(Math.random() * 10); // 
         if (!choices.includes(randomChoice)) {
             choices.push(randomChoice);
         }
     }
-    return choices.sort(() => Math.random() - 0.5); // Shuffle choices
+    return choices.sort(() => Math.random() - 0.5); // 
 }
 
         // Display answer buttons 

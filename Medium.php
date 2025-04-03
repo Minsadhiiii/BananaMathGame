@@ -1,10 +1,11 @@
 <?php
-session_start();
+session_start(); // Starts the session to manage user sessions
 
 // Check if the user is logged in
+// If the user is not logged in, they are redirected to the login page.
 if (!isset($_SESSION['email'])) {
-    header("Location: login.html");
-    exit();
+    header("Location: login.html"); // Redirects to the login page if not logged in
+    exit(); // Exits the script to prevent further execution
 }
 ?>
 <!DOCTYPE html>
