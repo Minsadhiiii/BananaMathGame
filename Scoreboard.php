@@ -1,3 +1,36 @@
+<?php
+// Database credentials
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "banana_game";
+
+// Create a connection to the database
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check for errors
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch player scores from the database (sorted by rank)
+$sql = "SELECT user_id, score, rank, levels_played FROM scores ORDER BY rank ASC";
+$result = $conn->query($sql);
+
+// Check if there are results
+if ($result->num_rows > 0) {
+    $players = [];
+    while ($row = $result->fetch_assoc()) {
+        $players[] = $row;
+    }
+} else {
+    $players = [];
+}
+
+// Close the database connection
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,8 +38,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scoreboard - Banana Math Game</title>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
-    <style> 
-        /* Full-Screen Background */
+    <style>
+        
         body {
             margin: 0;
             padding: 0;
@@ -19,7 +52,7 @@
             overflow: hidden;
         }
 
-        /* Background Image */
+        
         .background {
             position: fixed;
             top: 0;
@@ -30,7 +63,7 @@
             z-index: -2;
         }
 
-        /* Blurred Overlay */
+        
         .blur-overlay {
             position: fixed;
             top: 0;
@@ -42,7 +75,7 @@
             z-index: -1;
         }
 
-        /* Scoreboard Container */
+        
         .container {
             text-align: center;
             background: rgba(255, 248, 220, 0.9);
@@ -64,7 +97,7 @@
             margin-bottom: 30px;
         }
 
-        /* Score Table */
+        
         .score-table {
             width: 100%;
             max-width: 600px;
@@ -101,7 +134,7 @@
             transition: 0.3s;
         }
 
-        /* Back Button */
+        
         .back-button {
             margin-top: 20px;
             padding: 12px 30px;
@@ -113,7 +146,7 @@
             border-radius: 10px;
             cursor: pointer;
             transition: 0.3s;
-            font-family: 'Indie Flower', cursive; /* Apply the same font family to the button */
+            font-family: 'Indie Flower', cursive; 
         }
 
         .back-button:hover {
@@ -123,13 +156,13 @@
 </head>
 <body>
 
-    <!-- Background Image -->
+    
     <div class="background"></div>
 
-    <!-- Blurred Overlay -->
+    
     <div class="blur-overlay"></div>
 
-    <!-- Scoreboard Container -->
+    
     <div class="container">
         <h1 class="title">Game Scoreboard</h1>
         <p class="subtitle">Track your progress and compare with others!</p>
@@ -139,57 +172,36 @@
             <thead>
                 <tr>
                     <th>Rank</th>
-                    <th>Player Name</th>
+                    <th>User ID</th>
                     <th>Levels Played</th>
-                    <th>Points Earned</th>
+                    <th>Score</th>
                 </tr>
             </thead>
             <tbody id="scoreboard-body">
                 <!-- Scoreboard will be dynamically updated here -->
+                <?php 
+                //  display player scores
+                foreach ($players as $index => $player) {
+                    echo "<tr>
+                        <td>" . $player['rank'] . "</td>
+                        <td>" . $player['user_id'] . "</td>
+                        <td>" . $player['levels_played'] . "</td>
+                        <td>" . $player['score'] . "</td>
+                    </tr>";
+                }
+                ?>
             </tbody>
         </table>
 
-        <!-- Back Button -->
+        
         <button class="back-button" onclick="goBack()">Back</button>
     </div>
 
     <script>
-        // Sample Player Scores (Can be fetched from a database)
-        const players = [
-            { name: "Alice", levels: 5, points: 120 },
-            { name: "Bob", levels: 3, points: 80 },
-            { name: "Charlie", levels: 7, points: 150 },
-            { name: "David", levels: 2, points: 60 },
-            { name: "Emma", levels: 4, points: 90 }
-        ];
-
-        // Function to Update the Scoreboard
-        function updateScoreboard() {
-            const scoreboardBody = document.getElementById("scoreboard-body");
-            scoreboardBody.innerHTML = ""; // Clear previous data
-
-            // Sort Players by Points (Descending Order)
-            players.sort((a, b) => b.points - a.points);
-
-            // Populate Table Rows
-            players.forEach((player, index) => {
-                let row = `<tr>
-                    <td>${index + 1}</td>
-                    <td>${player.name}</td>
-                    <td>${player.levels}</td>
-                    <td>${player.points}</td>
-                </tr>`;
-                scoreboardBody.innerHTML += row;
-            });
-        }
-
-        // Go Back Function (Redirect to Instructions Page)
+        
         function goBack() {
-            window.location.href = "Instruction.html"; // Ensure this file exists
+            window.location.href = "Instruction.php"; // Ensure this file exists
         }
-
-        // Call Function to Update Scoreboard on Page Load
-        window.onload = updateScoreboard;
     </script>
 
 </body>

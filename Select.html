@@ -6,7 +6,7 @@
     <title>Banana Math Game</title>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
     <style> 
-        /* Full-Screen Background */
+        
         body {
             margin: 0;
             padding: 0;
@@ -19,7 +19,7 @@
             overflow: hidden;
         }
 
-        /* Background Image */
+        
         .background {
             position: fixed;
             top: 0;
@@ -30,7 +30,7 @@
             z-index: -2;
         }
 
-        /* Blurred Overlay */
+        
         .blur-overlay {
             position: fixed;
             top: 0;
@@ -42,7 +42,7 @@
             z-index: -1;
         }
 
-        /* Back Arrow */
+        
         .back-arrow {
             position: absolute;
             top: 20px;
@@ -69,7 +69,7 @@
             text-shadow: none;
         }
 
-        /* Game Container */
+        
         .container {
             text-align: center;
             background: rgba(255, 248, 220, 0.9);
@@ -91,7 +91,7 @@
             margin-bottom: 30px;
         }
 
-        /* Button Container */
+        
         .button-container {
             display: flex;
             flex-direction: column;
@@ -99,7 +99,7 @@
             align-items: center;
         }
 
-        /* Play Button */
+        
         .play-button {
             background: linear-gradient(to right, #FFA500, #FF7F00);
             color: white;
@@ -122,21 +122,21 @@
 </head>
 <body>
 
-    <!-- Background Image -->
+    
     <div class="background"></div>
 
-    <!-- Blurred Overlay -->
+    
     <div class="blur-overlay"></div>
 
-    <!-- Back Arrow -->
+    
     <div class="back-arrow" onclick="goBack()">⬅</div>
 
-    <!-- Game Container -->
+    
     <div class="container">
         <h1 class="title">The BANANA GAME!</h1>
         <p class="subtitle">"Test your math skills with a fun banana challenge"</p>
 
-        <!-- Difficulty Buttons -->
+        
         <div class="button-container">
             <button class="play-button" id="easyBtn">EASY</button>
             <button class="play-button" id="mediumBtn">MEDIUM</button>
@@ -145,12 +145,12 @@
     </div>
 
     <script>
-        // Function to navigate to the instruction page
+        
         function goBack() {
-            window.location.href = "Instruction.php"; // Ensure the file exists
+            window.location.href = "Instruction.php"; 
         }
 
-        // Function to start the game based on difficulty
+        
         function startGame(difficulty) {
             const pages = {
                 'easy': 'easylevel.html',

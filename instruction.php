@@ -54,7 +54,7 @@ $conn->close();
             overflow: hidden;
         }
 
-        /* Full-Screen Background with Blurred Overlay */
+        
         .background {
             position: fixed;
             top: 0;
@@ -76,7 +76,7 @@ $conn->close();
             z-index: -1;
         }
 
-        /* Exit Button */
+        
         .exit-button {
             position: absolute;
             top: 20px;
@@ -97,7 +97,7 @@ $conn->close();
             transform: scale(1.1);
         }
 
-        /* Main container */
+        
         .container {
             background: rgba(255, 248, 220, 0.8);
             padding: 30px;
@@ -128,7 +128,7 @@ $conn->close();
             margin-right: 10px;
         }
 
-        /* Button Styles */
+        
         .button {
             background: linear-gradient(to right, #FFA500, #FF7F00);
             color: white;
@@ -160,9 +160,9 @@ $conn->close();
         <h2><i class="fas fa-info-circle banana-icon"></i>Game Instructions</h2>
         <div class="instructions">
             <p><i class="fas fa-check-circle banana-icon"></i> Select a level to start the game.</p>
-            <p><i class="fas fa-check-circle banana-icon"></i> Solve the math problems quickly to earn points.</p>
-            <p><i class="fas fa-check-circle banana-icon"></i> Each correct answer gives you bananas as rewards!</p>
-            <p><i class="fas fa-check-circle banana-icon"></i> Reach the score goal to unlock the next level.</p>
+            <p><i class="fas fa-check-circle banana-icon"></i> Solve the math problem within the given time period.</p>
+            <p><i class="fas fa-check-circle banana-icon"></i> Each correct answer is scored with 10 points.</p>
+            <p><i class="fas fa-check-circle banana-icon"></i> Get the answer correct to move on to the next puzzle.</p>
             <p><i class="fas fa-check-circle banana-icon"></i> Have fun and challenge yourself!</p>
         </div>
 

@@ -1,69 +1,7 @@
 <?php
-
-// Database credentials
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "banana_game";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Start the session to check if the user is logged in
-session_start();
-
-// Fetch the user email from the session
-$userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : '';  // Using 'email' from session
-
-// Check if the user is logged in
-if ($userEmail) {
-    // Query to fetch user ID based on the email
-    $sql = "SELECT id FROM users WHERE email = ?";  // Using 'email' in the query
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $userEmail);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    // Check if the user exists
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
-        $userId = $user['id'];
-    } else {
-        echo "User not found.";
-        exit;
-    }
-} else {
-    echo "User not logged in.";
-    exit;
-}
-
-// Handle saving score via POST
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $score = $_POST['score'];
-    $levelsPlayed = $_POST['levelsPlayed'];
-
-    // Insert score into the database
-    $sql = "INSERT INTO scores (user_id, score, rank, levels_played) VALUES (?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $rank = 0;  // Assuming rank is calculated based on score; adjust as needed
-    $stmt->bind_param("iiii", $userId, $score, $rank, $levelsPlayed);
-
-    if ($stmt->execute()) {
-        echo "Score saved successfully!";
-    } else {
-        echo "Error saving score: " . $stmt->error;
-    }
-
-    $stmt->close();
-    $conn->close();
-    exit;
-}
+// Set content-type to ensure proper rendering in the browser
+header('Content-Type: text/html; charset=UTF-8');
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('cimages/Banana.jpg') no-repeat center center cover;
+            background: url('images/Banana.jpg') no-repeat center center/cover;
             z-index: -2;
         }
 
@@ -188,6 +126,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         #next-button:hover {
             background-color: #218838;
         }
+
+        /* Style for the Update button in top-right corner */
+        #update-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #FF5733;
+            color: white;
+            font-size: 18px;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-family: 'Indie Flower', cursive;
+            transition: background-color 0.3s;
+        }
+
+        #update-button:hover {
+            background-color: #C70039;
+        }
     </style>
 </head>
 <body>
@@ -195,7 +153,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="background"></div>
     <div class="blur-overlay"></div>
 
-    <!-- Game Container -->
+    <!-- Update Button -->
+    <button id="update-button" onclick="window.location.href='instruction.php'">Update</button>
+
     <div class="game-container">
         <h1 class="title">🍌 Banana Math Challenge 🍌</h1>
         <img id="puzzle-image" src="" alt="Loading puzzle...">
@@ -213,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         let gameOver = false;
         let currentAnswers = [];
         let score = 0;  // Initialize score variable
-        let userEmail = '<?php echo $userEmail; ?>';  // Get the user email from PHP session
+        let userEmail = 'nahla@gmail.com';  // Replace this with the actual user's email
 
         // Fetch and display the puzzle
         function fetchPuzzle() {
@@ -242,17 +202,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 });
         }
 
+    
         // Generate random answer choices including the correct solution
-        function generateAnswerChoices(solution) {
-            let choices = [solution];
-            while (choices.length < 4) {
-                let randomChoice = Math.floor(Math.random() * 100); // Random number between 0 and 100
-                if (!choices.includes(randomChoice)) {
-                    choices.push(randomChoice);
-                }
-            }
-            return choices.sort(() => Math.random() - 0.5); // Shuffle choices
+function generateAnswerChoices(solution) {
+    let choices = [solution];
+    while (choices.length < 4) {
+        let randomChoice = Math.floor(Math.random() * 10); // Random number between 0 and 9
+        if (!choices.includes(randomChoice)) {
+            choices.push(randomChoice);
         }
+    }
+    return choices.sort(() => Math.random() - 0.5); // Shuffle choices
+}
 
         // Display answer buttons 
         function displayAnswerButtons(answers) {
@@ -301,5 +262,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Save the score to the database using AJAX
-       
+        function saveScore() {
+            const levelsPlayed = 1;  // Assuming 1 level for now
 
+            const data = new FormData();
+            data.append('email', userEmail);
+            data.append('score', score);
+            data.append('levelsPlayed', levelsPlayed);
+
+            fetch('Game.php', {
+                method: 'POST',
+                body: data
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data); // Handle the response from the PHP server
+            })
+            .catch(error => {
+                console.error('Error saving score:', error);
+            });
+        }
+
+        // Start the first puzzle when the page loads
+        fetchPuzzle();
+    </script>
+</body>
+</html>

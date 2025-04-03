@@ -8,7 +8,6 @@ if (!isset($_SESSION['email'])) {
     header("Location: login.php");
     exit();
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -139,7 +138,7 @@ if (!isset($_SESSION['email'])) {
     <!-- Blurred Overlay -->
     <div class="blur-overlay"></div>
     <!-- Back Arrow -->
-    <div class="back-arrow" onclick="goBack()">⬅</div>
+    <div class="back-arrow" onclick="goBack()">⬅</div> <!-- The function goBack() is called when the back arrow is clicked -->
     <!-- Game Container -->
     <div class="container">
         <h1 class="title">The BANANA GAME!</h1>
@@ -154,7 +153,7 @@ if (!isset($_SESSION['email'])) {
     <script>
         // Function to navigate to the instruction page
         function goBack() {
-            window.location.href = "Instruction.php"; // Ensure the file exists
+            window.location.href = "Instruction.php"; // Redirects to Instruction.php when back arrow is clicked
         }
 
         // Function to start the game based on difficulty
@@ -174,23 +173,23 @@ if (!isset($_SESSION['email'])) {
             });
 
             if (pages[difficulty]) {
-                window.location.href = pages[difficulty];
+                window.location.href = pages[difficulty]; // Redirects to the appropriate level based on selected difficulty
             } else {
-                alert("Invalid difficulty level.");
+                alert("Invalid difficulty level."); // Alerts if the difficulty level is invalid
             }
         }
 
         // Event listeners for buttons
         document.getElementById("easyBtn").addEventListener("click", function() {
-            startGame('easy');
+            startGame('easy'); // Starts the game with easy difficulty when easy button is clicked
         });
 
         document.getElementById("mediumBtn").addEventListener("click", function() {
-            startGame('medium');
+            startGame('medium'); // Starts the game with medium difficulty when medium button is clicked
         });
 
         document.getElementById("hardBtn").addEventListener("click", function() {
-            startGame('hard');
+            startGame('hard'); // Starts the game with hard difficulty when hard button is clicked
         });
     </script>
 </body>
