@@ -23,12 +23,29 @@ if ($conn->connect_error) {
 
 $email = $_SESSION['email']; // Get email from session
 
-// Fetch user details from the database
-$sql = "SELECT username, profile_pic FROM users WHERE email = ?";
+// Fetch user details and score from the database
+$sql = "SELECT u.username, u.profile_pic, s.score, s.levels_played 
+        FROM users u 
+        JOIN scores s ON u.id = s.user_id  
+        WHERE u.email = ?";
+
+// Prepare the SQL statement
 $stmt = $conn->prepare($sql);
+
+// Check if the statement was prepared successfully
+if ($stmt === false) {
+    die('MySQL prepare error: ' . $conn->error);
+}
+
 $stmt->bind_param("s", $email);
 $stmt->execute();
-$stmt->bind_result($username, $profile_pic);
+
+// Check if the query executed successfully
+if ($stmt->error) {
+    die('Execute error: ' . $stmt->error);
+}
+
+$stmt->bind_result($username, $profile_pic, $score, $levels_played);
 $stmt->fetch();
 $stmt->close();
 $conn->close();
@@ -36,7 +53,6 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -166,6 +182,8 @@ $conn->close();
             <img src="profile_pics/<?php echo $profile_pic; ?>" alt="Profile Picture" class="profile-pic">
             <p><strong>Username:</strong> <?php echo $username; ?></p>
             <p><strong>Email:</strong> <?php echo $email; ?></p>
+            <p><strong>Score:</strong> <?php echo $score; ?></p>
+            <p><strong>Levels Played:</strong> <?php echo $levels_played; ?></p>
         </div>
 
         <button class="button" onclick="window.location.href='instruction.php'">Back to Instructions</button>

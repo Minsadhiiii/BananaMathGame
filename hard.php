@@ -48,7 +48,7 @@ if (!isset($_SESSION['email'])) {
 
 <div class="container">
     <h1>Welcome to Easy Level</h1>
-    <button class="next-button" onclick="window.location.href='Game.html'">Next</button>
+    <button class="next-button" onclick="window.location.href='Game.php'">Next</button>
 </div>
 
 </body>

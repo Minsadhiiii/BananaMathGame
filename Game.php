@@ -1,44 +1,66 @@
 <?php
+
+// Database credentials
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "banana_game";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Start the session to check if the user is logged in
 session_start();
-include 'db_connect.php'; // Include your database connection file
 
-if (!isset($_SESSION['email'])) {
-    header("Location: login.php"); // Redirect to login page if not logged in
-    exit();
+// Fetch the user email from the session
+$userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : '';  // Using 'email' from session
+
+// Check if the user is logged in
+if ($userEmail) {
+    // Query to fetch user ID based on the email
+    $sql = "SELECT id FROM users WHERE email = ?";  // Using 'email' in the query
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $userEmail);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Check if the user exists
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        $userId = $user['id'];
+    } else {
+        echo "User not found.";
+        exit;
+    }
+} else {
+    echo "User not logged in.";
+    exit;
 }
 
-$email = $_SESSION['email'];
+// Handle saving score via POST
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $score = $_POST['score'];
+    $levelsPlayed = $_POST['levelsPlayed'];
 
-// Fetch user details
-$query = $conn->prepare("SELECT id, user_id, score, levels_played FROM users WHERE email = ?");
-$query->bind_param("s", $email);
-$query->execute();
-$result = $query->get_result();
-$user = $result->fetch_assoc();
+    // Insert score into the database
+    $sql = "INSERT INTO scores (user_id, score, rank, levels_played) VALUES (?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $rank = 0;  // Assuming rank is calculated based on score; adjust as needed
+    $stmt->bind_param("iiii", $userId, $score, $rank, $levelsPlayed);
 
-if (!$user) {
-    die("User not found!");
-}
+    if ($stmt->execute()) {
+        echo "Score saved successfully!";
+    } else {
+        echo "Error saving score: " . $stmt->error;
+    }
 
-$user_id = $user['user_id'];
-$score = $user['score'];
-$levels_played = $user['levels_played'];
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correct'])) {
-    // Update score and levels played
-    $newScore = $score + 10;
-    $newLevels = $levels_played + 1;
-    
-    $updateQuery = $conn->prepare("UPDATE users SET score = ?, levels_played = ?, date_played = NOW() WHERE user_id = ?");
-    $updateQuery->bind_param("iii", $newScore, $newLevels, $user_id);
-    $updateQuery->execute();
-
-    // Update the session values
-    $_SESSION['score'] = $newScore;
-    $_SESSION['levels_played'] = $newLevels;
-    
-    echo json_encode(["success" => true, "newScore" => $newScore, "newLevels" => $newLevels]);
-    exit();
+    $stmt->close();
+    $conn->close();
+    exit;
 }
 ?>
 
@@ -69,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correct'])) {
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('images/Banana.jpg') no-repeat center center/cover; 
+            background: url('cimages/Banana.jpg') no-repeat center center cover;
             z-index: -2;
         }
 
@@ -79,8 +101,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correct'])) {
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 235, 133, 0.4); 
-            backdrop-filter: blur(8px); 
+            background: rgba(255, 235, 133, 0.4);
+            backdrop-filter: blur(8px);
             z-index: -1;
         }
 
@@ -143,11 +165,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correct'])) {
             color: #333;
         }
 
-        #score-display {
+        #score {
             font-size: 1.5rem;
-            margin-top: 10px;
-            font-weight: bold;
             color: #333;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        #next-button {
+            background-color: #28a745;
+            border: none;
+            padding: 12px 20px;
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+            font-family: 'Indie Flower', cursive;
+            display: none; /* Initially hidden */
+        }
+
+        #next-button:hover {
+            background-color: #218838;
         }
     </style>
 </head>
@@ -156,14 +195,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correct'])) {
     <div class="background"></div>
     <div class="blur-overlay"></div>
 
+    <!-- Game Container -->
     <div class="game-container">
         <h1 class="title">🍌 Banana Math Challenge 🍌</h1>
-        <p><strong>User:</strong> <?= htmlspecialchars($email) ?></p>
-        <p id="score-display">Score: <?= $score ?></p>
         <img id="puzzle-image" src="" alt="Loading puzzle...">
         <p id="timer">30</p>
         <div id="answer-buttons"></div>
         <p id="feedback"></p>
+        <p id="score">Score: 0</p> <!-- Display score -->
+        <button id="next-button" onclick="fetchPuzzle()">Next Puzzle</button> <!-- Next button -->
     </div>
 
     <script>
@@ -172,13 +212,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correct'])) {
         let timerInterval;
         let gameOver = false;
         let currentAnswers = [];
+        let score = 0;  // Initialize score variable
+        let userEmail = '<?php echo $userEmail; ?>';  // Get the user email from PHP session
 
+        // Fetch and display the puzzle
         function fetchPuzzle() {
             if (gameOver) return;
 
-            clearInterval(timerInterval);
-            timeLeft = 30;
+            clearInterval(timerInterval); // Stop any previous timer
+            timeLeft = 30; // Reset timer
             document.getElementById("timer").textContent = timeLeft;
+
+            // Reset feedback and score display
+            document.getElementById("feedback").textContent = '';
+            document.getElementById("next-button").style.display = "none"; // Hide next button
 
             fetch("https://marcconrad.com/uob/banana/api.php")
                 .then(response => response.json())
@@ -195,29 +242,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correct'])) {
                 });
         }
 
+        // Generate random answer choices including the correct solution
         function generateAnswerChoices(solution) {
             let choices = [solution];
             while (choices.length < 4) {
-                let randomChoice = Math.floor(Math.random() * 100);
+                let randomChoice = Math.floor(Math.random() * 100); // Random number between 0 and 100
                 if (!choices.includes(randomChoice)) {
                     choices.push(randomChoice);
                 }
             }
-            return choices.sort(() => Math.random() - 0.5);
+            return choices.sort(() => Math.random() - 0.5); // Shuffle choices
         }
 
+        // Display answer buttons 
         function displayAnswerButtons(answers) {
             const answerButtonsContainer = document.getElementById("answer-buttons");
-            answerButtonsContainer.innerHTML = ''; 
+            answerButtonsContainer.innerHTML = ''; // Clear previous buttons
 
             answers.forEach(answer => {
                 const button = document.createElement("button");
                 button.textContent = answer;
-                button.onclick = () => checkAnswer(answer);
+                button.onclick = () => checkAnswer(answer, button);
                 answerButtonsContainer.appendChild(button);
             });
         }
 
+        // Start the timer
         function startTimer() {
             timerInterval = setInterval(function() {
                 timeLeft--;
@@ -226,27 +276,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['correct'])) {
                     clearInterval(timerInterval);
                     gameOver = true;
                     document.getElementById("feedback").textContent = "Time's up! Game Over!";
+                    document.getElementById("next-button").style.display = "inline-block"; // Show next button
+                    saveScore();  // Save the score after game over
                 }
             }, 1000);
         }
 
-        function checkAnswer(playerAnswer) {
-            if (playerAnswer == currentSolution) {
-                document.getElementById("feedback").textContent = 'Correct! 🍌';
-                
-                fetch("", { method: "POST", body: new URLSearchParams({ correct: true }) })
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById("score-display").textContent = "Score: " + data.newScore;
-                        fetchPuzzle();
-                    });
+        // Check if the player's answer is correct
+        function checkAnswer(playerAnswer, button) {
+            // Disable all buttons after answer is selected
+            const buttons = document.querySelectorAll('#answer-buttons button');
+            buttons.forEach(btn => btn.disabled = true);
 
+            if (playerAnswer == currentSolution) {
+                score += 10; // Increase score by 10 for correct answer
+                document.getElementById("feedback").textContent = 'Correct! 🍌';
+                document.getElementById("score").textContent = `Score: ${score}`; // Update score display
             } else {
                 document.getElementById("feedback").textContent = 'Oops! Try again.';
             }
+
+            // Show next button after answer is chosen
+            document.getElementById("next-button").style.display = "inline-block";
         }
 
-        fetchPuzzle();
-    </script>
-</body>
-</html>
+        // Save the score to the database using AJAX
+       
+

@@ -166,7 +166,7 @@ $conn->close();
             <p><i class="fas fa-check-circle banana-icon"></i> Have fun and challenge yourself!</p>
         </div>
 
-        <button class="button" onclick="window.location.href='select.html'">Play</button>
+        <button class="button" onclick="window.location.href='select.php'">Play</button>
         <button class="button" onclick="window.location.href='scoreboard.html'">Go to Scoreboard</button>
         <button class="button" onclick="window.location.href='profile.php'">View Profile</button>
     </div>
