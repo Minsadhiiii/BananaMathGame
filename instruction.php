@@ -167,7 +167,7 @@ $conn->close();
         </div>
 
         <button class="button" onclick="window.location.href='select.php'">Play</button>
-        <button class="button" onclick="window.location.href='scoreboard.html'">Go to Scoreboard</button>
+        <button class="button" onclick="window.location.href='Scoreboard.php'">Go to Scoreboard</button>
         <button class="button" onclick="window.location.href='profile.php'">View Profile</button>
     </div>
 </body>
